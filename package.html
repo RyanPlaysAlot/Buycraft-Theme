@@ -1,0 +1,40 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{{ package.name }}</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+        		{{ package.description|raw }}
+        	</p>
+        </div>
+        <div class="modal-footer">
+            <p class="pull-left">
+        		{% if package.purchasable == false %}
+        			<b>{{ lang("package.disabled") }}</b>
+        		{% elseif package.customPrice %}
+        			<b>{{ lang("package.customPrice") }}</b>
+        		{% elseif package.price == 0.00 %}
+        			<b>{{ lang("package.free") }}</b>
+        		{% else %}
+        			<b>{{ package.price|money }} <small>{{ basket.currency }}</small></b>
+        		{% endif %}
+        	</p>
+        	<p class="pull-right">
+        		{% if package.purchasable %}
+        			{% if package.basket %}
+        				<a href="/checkout/packages/remove/{{ package.id }}" class="btn btn-danger">{{ lang("button.remove") }}</a>
+        			{% else %}
+        				{% if package.type != "single" %}
+        					<a href="/checkout/packages/add/{{ package.id }}/subscription" class="btn btn-success">{{ lang("button.subscribe") }}</a>
+        				{% endif %}
+        				{% if package.type != "subscription" %}
+        					<a href="/checkout/packages/add/{{ package.id }}/single" class="btn btn-success">{{ lang("button.add") }}</a>
+        				{% endif %}
+        			{% endif %}
+        		{% endif %}
+        	</p>
+        </div>
+    </div>
+</div>

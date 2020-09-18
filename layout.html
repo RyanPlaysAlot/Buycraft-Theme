@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>{{ store.name }} | {{ page.title }}</title>
+
+    <link href="/templates/209/css/style.min.css" rel="stylesheet">
+   
+    <link rel="shortcut icon" href="/templates/209/img/favicon.ico">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        
+        _gaq.push(['_setAccount', 'UA-36735942-3']);
+        _gaq.push(['_trackPageview']);
+        
+        {% if store.googleAnalytics %}
+            _gaq.push(['b._setAccount', '{{ store.googleAnalytics }}']);
+            _gaq.push(['b._trackPageview']);
+        {% endif %}
+        
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    
+    
+    <style>{{ store.css|raw }}</style>
+
+    
+
+  </head>
+  <body>
+
+    <div class="fluid-container">
+
+    <div class="top-head">
+        <div class="container-fluid">
+            <div class="th-left">
+                <div>
+                    <img src="http://projects.tiehm.me/iPvP/logo.svg" alt=""> <span>IPVP</span>
+                </div>
+                
+            </div>
+            <div class="th-right">
+                <a href="#">News</a>
+                <a href="#">Downloads</a>
+                <a href="#">About</a>
+                <a href="#" class="th-active">Store</a>
+            </div>
+        </div>
+    </div>
+
+      <div class="header">
+
+        <div class="logo">
+            <img src="http://projects.tiehm.me/iPvP/logo-wtext.svg" alt="" style="height: 500px">
+        </div>
+
+        
+
+      </div>
+      
+      <div class="container">
+    
+        
+      <div class="notification">
+        {% if page.message.display %}
+            <div class="alert alert-{{ page.message.type}} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ page.message.text }}
+            </div>
+        {% endif %}  
+      </div>
+
+      {% block content %}{% endblock %}
+
+      {% if store.plan == "1" %}
+        <div class="advertisement">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px;" data-ad-client="ca-pub-9830135219921132" data-ad-slot="7404819681"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      {% endif %}
+      </div>
+        
+      
+
+      <div class="footer">
+           <!--<div class="language">
+              <div class="dropdown dropup">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-globe"></span> Language</a>
+                <ul class="dropdown-menu up">
+                  {% for language in store.languages %}
+                      <li><a href="?lang={{ language.code }}">{{ language.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+          </div>
+          {% if store.branding or store.plan != "3" %}
+            <div class="branding"> 
+             
+              Powered by <a href="http://buycraft.net" target="_blank">Buycraft.net</a>
+            </div>
+          {% endif %} -->
+          <div class="container">
+              <dic class="row">
+                  <div class="col-md-9">
+                      <div id="footer-text">
+                          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore <br> magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                      </div>
+                      
+                  </div>
+                  <div class="col-md-3">
+                      
+                  </div>
+              </dic>
+              <div class="row">
+                  <div class="col-md-6">
+                        Server IP: <span>mc.yourip.tld</span> - &copy; Network 2017 
+                  </div>
+                  <div class="col-md-6" style="text-align:right">
+                        Theme design by <a href="https://tiehm.me">TiehmDesigns</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+    
+    </div>
+    
+    <div class="modal" id="popup-modal" tabindex="-1" role="dialog"></div>
+    
+    {% if page.category == "checkout" %}
+      <script src="https://js.stripe.com/v2/"></script>
+    {% endif %}
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>  
+    <script src="/templates/209/js/bootstrap.min.js"></script>
+    <script src="/templates/209/js/skin.min.js"></script>
+    <script src="/templates/209/js/site.js"></script>
+    <script>
+    
+    $(document).ready(function () {
+      function resize() {
+          var docH = $(document).width();
+        if (docH > 767) {
+         var bodyH = $(".body").height();
+        $(".sidebar").height($(".body").height());
+        $(".navbar").height($(".body").height());   
+        }
+        else if (docH <= 767) {
+             $(".sidebar").height(60);
+            $(".navbar").height(60); 
+        }
+    };
+    
+    resize();
+    })
+       window.onresize = function () {
+        var docH = $(document).width();
+        if (docH > 767) {
+         var bodyH = $(".body").height();
+        $(".sidebar").height($(".body").height());
+        $(".navbar").height($(".body").height());   
+        }
+        else if (docH <= 767) {
+             $(".sidebar").height(60);
+            $(".navbar").height(60); 
+        }
+    }
+        
+    </script>
+
+  </body>
+</html>

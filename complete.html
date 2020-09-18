@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class="body">
+		<div class="content">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{ lang("title.payment.complete") }}</div>
+				<div class="panel-body">
+					<p>
+						 {{ lang("complete.header") }}
+					</p>
+					<p>
+					  	{{ lang("complete.instructions") }}
+					</p>
+					<p>
+					  	{{ lang("complete.help") }}
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="sidebar">
+			{{ modules|raw }}
+		</div>
+	</div>
+{% endblock %}

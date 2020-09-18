@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+	<div class="body">
+		<div class="sidebar">
+		    <nav class="navbar navbar-default" role="navigation">
+        <div class="fluid-container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">{{ store.name }}</a>
+          </div>
+
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="{% if page.category == "index" %}active{% endif %}"><a href="/">{{ lang("category.home") }}</a></li>
+                {% for category in store.categories %}
+                  {% if category.subcategories|length > 0 %}
+                    <li class="dropdown {% if category.active %}active{% endif %}">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ category.name }} <i class="fa fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                          {% for subcategory in category.subcategories %}
+                            <li><a href="/category/{{ subcategory.id }}">{{ subcategory.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                  {% else %}
+                    <li class="{% if category.active %}active{% endif %}"><a href="/category/{{ category.id }}">{{ category.name }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% for page in store.pages %}
+                    <li class="{% if page.active %}active{% endif %}"><a href="/{{ page.slug }}">{{ page.title }}</a></li>
+                {% endfor %}                
+                {% if basket.packages|length > 0 %} 
+                    <li class="visible-xs {% if page.category == "checkout" %}active{% endif %}"><a href="/checkout/basket">Checkout</a></li>
+                {% endif %}
+                {% if basket.username %} 
+                    <li class="visible-xs"><a href="/checkout/logout">Logout</a></li>
+                {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+			{{ modules|raw }}
+		</div>
+		<div class="content">
+		    <div class="top-cont">
+		        <div class="buttons">
+          <div class="toolbar">
+            <div class="logout">
+                {% if basket.username %} 
+                    <a href="/checkout/logout" class="btn">{{ lang("button.logout") }}</a>
+                {% endif %}
+            </div>
+            <div class="currency">
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                {{ basket.currency }} <span class="fa fa-caret-down"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                {% for currency in store.currencies %}
+                    {% if currency.code in [store.currency, "AUD", "BRL", "CAD", "DKK", "EUR", "NOK", "NZD", "GBP", "SEK", "USD", "PLN"] %}
+                        <li {% if basket.currency == currency.code %}class="active"{% endif %}>
+                          <a href="?currency={{ currency.code }}">{{ currency.code }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="basket">
+                {% if basket.packages|length > 0 %}
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    {{ lang("basket.count", basket.packages|length, basket.price|money, basket.currency) }} <span class="fa fa-caret-down"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        {% for package in basket.packages %}
+                            <li class="item">
+                            <div class="name">{{ package.name[:25] }}</div>
+                            <div class="price">{{ package.price|money }} <small>{{ basket.currency }}</small></div>
+                            <div class="remove"><a href="/checkout/packages/remove/{{ package.id }}"><span class="fa fa-times"</span></a></div>
+                            </li>
+                        {% endfor %}
+                        <li class="checkout">
+                          <div class="total"><b>{{ lang("basket.total") }}:</b> {{ basket.price|money }} <small>{{ basket.currency }}</small></div>
+                          <div class="button"><a href="/checkout/basket" class="btn btn-success">Checkout</a></div>
+                        </li>
+                    </ul>
+                {% else %}
+                  <a href="#" class="btn" disabled="disabled"><i class="icon-shopping-cart icon-white"></i> {{ lang("basket.count", 0, 0.00, basket.currency) }}</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+		    </div>
+			<div class="panel panel-default">
+				<div class="panel-heading">{{ lang("title.index") }}</div>
+				<div class="panel-body">
+					<p>
+				  		{{ index.description|raw }}
+					</p>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+{% endblock %}

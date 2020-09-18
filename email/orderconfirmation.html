@@ -1,0 +1,71 @@
+{% extends "email/layout.html" %}
+
+{% block content %}
+	<p>
+		Hello <b>{{ username }}</b>,
+	</p>
+	<p>
+		Thank you for your purchase! This email confirms that we have received your payment and you should receive your items soon.
+	</p>
+	<p>
+		If you do not receive your items in the next 10-15 minutes, please contact a member of staff on our server. Please do not email Mojang or Buycraft.
+	</p>
+
+	{% if packages|length > 0 %}
+	    <p>
+	    	<strong>Purchased packages: </strong>
+	    </p>
+	    <p>
+	    	<ul>
+			{% for package in packages %}
+	    			<li>{{ package.quantity }}<b>x</b> {{ package.name }}</li>
+			{% endfor %}
+	    	</ul>
+	    </p>
+	{% endif %}
+
+	{% if coupons|length > 0 %}
+	    <p>
+	    	<strong>Applied coupons: </strong>
+	    </p>
+	    <p>
+	    	<ul>
+	    		{% for coupon in coupons %}
+	    			<li>{{ coupon.code }}</li>
+	    		{% endfor %}
+	    	</ul>
+	    </p>
+	{% endif %}
+
+	{% if paymentData.name and paymentData.country and paymentData.address %}
+		<p>
+			<strong>Your details:</strong>
+	    </p>
+	    <p>
+	    	<ul style="list-style-type:none;">
+	    		<li><strong>Name:</strong> {{ paymentData.name }}</li>
+	    		<li><strong>Address:</strong> {{ paymentData.address }}</li>
+	    		<li><strong>Country:</strong> {{ paymentData.country }}</li>
+	    	</ul>
+	    </p>
+	{% endif %}
+
+	<p>
+		<strong>Information:</strong>
+	</p>
+	<p>
+		<ul style="list-style-type:none;">
+			<li><strong>Sub Total:</strong> {{ paymentData.price|number_format(2, ".", ",") }} {{ paymentData.currency }}</li>
+			<li><strong>Tax:</strong> {{ paymentData.tax|number_format(2, ".", ",") }} {{ paymentData.currency }}</li>
+			<li><strong>Total:</strong> {{ paymentData.price|number_format(2, ".", ",") }} {{ paymentData.currency }}</li>
+			<li><strong>Gateway:</strong> {{ paymentData.gateway_name }}</li>
+			<li><strong>Transaction ID:</strong> {{ paymentData.txn_id }}</li>
+			<li><strong>Username:</strong> {{ username }}</li>
+			<li><strong>Date:</strong> {{ paymentData.time|date("jS F Y G:i") }}</li>
+		</ul>
+	</p>
+
+	{% if accountData.email_note %}
+		<p>{{ accountData.email_note|raw }}</p>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,281 @@
+.body {
+    -webkit-box-shadow: 0px 0px 34px 9px rgba(4,27,51,1);
+-moz-box-shadow: 0px 0px 34px 9px rgba(4,27,51,1);
+box-shadow: 0px 0px 34px 9px rgba(4,27,51,1);
+}
+.basket .dropdown-menu div {
+    display: block!important;
+}
+body {
+    margin-top:0!important;
+    background-color: #020f1c!important;
+}
+.top-head {
+    background-color: #333333!important;
+    color: rgba(255,255,255,0.9);
+}
+.th-left {
+    float: left;
+    margin-left: 60px;
+}
+.th-left div {
+    line-height: 50px;
+    padding: 0 7px;
+    background-color: #2a2a2a!important;
+}
+.th-left img {
+    height: 50px;
+    padding: 5px;
+}
+.th-left span {
+    color: #0873a5;
+    font-size: 20px;
+}
+.th-right {
+    float: right;
+    margin-right: 60px;
+}
+.th-right a {
+    display: inline-block!important;
+    padding: 4px 7px;
+    text-align: center;
+    background-color: #0083c0!important;
+    color: rgba(255,255,255,0.9)!important;
+    font-size: 18.5px;
+    margin: 8px 4px;
+    text-decoration: none!important;
+}
+.th-right .th-active {
+    background-color: #c99900!important;
+    color: rgba(255,255,255,0.9)!important;
+}
+.logo {
+    width: 100%!important;
+    text-align: center;
+}
+.nav {
+    width: 100%!important;
+}
+.navbar-collapse {
+    padding-right: 0!important;
+}
+.nav > li {
+    float:none!important;
+}
+.navbar-default .navbar-nav > li > a {
+    color: white!important;
+    text-decoration: none!important;
+    transition: all ease-out .2s;
+    font-weight: bold!important;
+}
+.navbar-default .navbar-nav > li:not(:first-child) > a{
+    
+    border-top: 2px solid white;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, 
+.navbar-default .navbar-nav > .active > a:focus {
+    text-decoration: none!important;
+    transition: all ease-in .2s;
+    color: white!important;
+    background-color: #0082ca!important;
+}
+.sidebar {
+    padding: 0!important;
+}
+.navbar {
+    margin:0!important;
+}
+
+.navbar-default {
+    height: 100%!important;
+    border-radius:0!important;
+}
+.sidebar {
+    
+    border-radius:0!important;
+}
+.body,
+.panel-default,
+.panel-heading {
+    background-color: #003e52!important;
+    border-color: #003e52!important;
+    border-radius: 0!important;
+    color: white;
+}
+.navbar-default {
+    background-color: #075c77!important;
+    border-color: #075c77!important;
+    border-radius: 0!important;
+}
+.panel-heading {
+    color: white!important;
+    padding-left: 30px;
+}
+.panel-body {
+    color: rgba(250,250,250,0.8);
+}
+.top-cont {
+    text-align: right;
+}
+.top-cont .buttons .toolbar div {
+    display: inline-block!important;
+}
+.content {
+    padding: 0!important;
+}
+.buttons {
+    padding: 15px;
+    background-color: #084d63!important;
+}
+.logout a,
+.currency button,
+.basket button,
+.basket a {
+    background-color: transparent!important;
+    border: 2px solid #939598!important;
+    border-radius: 4px!important;
+    color: white!important;
+    font-size: 16px!important;
+}
+.dropdown-menu {
+    position: absolute;
+    top: inherit!important;
+    left: inherit!important;
+    text-align: center!important;
+}
+.navbar-nav>li>.dropdown-menu {
+    position: relative;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    float: none;
+    padding: 0;
+}
+.navbar-nav .dropdown-menu li a {
+    color: white!important;
+    background-color: #0082ca!important;
+        padding: 10px 15px!important;
+    font-size: 14px!important;
+    box-shadow: none!important;
+    text-align: left!important;
+}
+.navbar-default .navbar-nav > li > a i {
+    float: right!important;
+    margin-right: 20px;
+    font-size: 20px;
+    
+}
+.footer {
+    border: none!important;
+    background-color: #003e52!important;
+    margin-bottom: 0!important;
+    color: rgba(255,255,255,0.7);
+    padding-bottom: 20px!important;
+}
+.footer span {
+    color: white!important;
+}
+.footer a {
+    color: white!important;
+    text-decoration: none!important;
+}
+#footer-text {
+    border-left: 4px solid #033140!important;
+    padding-top: 0!important;
+    padding-left: 15px;
+    padding-bottom: 0!important;
+}
+.navbar-nav > li > a {
+    padding-top: 23px!important;
+    padding-bottom: 23px!important;
+}
+.table-striped > tbody > tr > td, .table-striped > tbody > tr > th,
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th{
+    background-color:#0168a0!important;
+    border: none!important;
+    padding: 20px!important;
+}
+
+
+/*
+
+CHANGE BUTTON COLOR BELOW IN "BACKGROUND-COLOR"
+
+*/
+
+.btn-info {
+    color: #ffffff;
+    background-color: #0082ca!important;
+    border-color: #0082ca!important;
+}
+.table > thead > tr > th, .table > tbody > tr > th, 
+.table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border:none!important;
+}
+.category .packages-row table .price {
+    text-align: right!important;
+}
+.checkout .packages tr {
+    background-color: #0168a0!important;
+}
+@media (min-width: 768px)
+{
+.checkout .packages table tbody .name {
+    width: 30%!important;
+}
+}
+.checkout .packages table tbody .buttons .btn {
+    background-color: #03527d!important;
+    border-color: #03527d!important;
+    box-shadow: none!important;
+    color: white!important;
+}
+.form-control, .checkout .packages table tbody .quantity input {
+   
+    background-color: transparent!important;
+    border-color: transparent!important;
+    box-shadow: none!important;
+    color: white!important;
+}
+.checkout thead th {
+    padding: 10px 20px 8px 20px!important;
+    border-bottom: 2px solid #03527d!important;
+}
+.modal-content {
+    
+}
+.modal-header,
+.modal-footer {
+    border-color: transparent!important;
+    border-radius: 0!important;
+    background-color: #05496f;
+    color: white;
+    font-size: 20px;
+}
+.modal-body {
+        border-top: 1px solid transparent!important;
+    background: #1d1d1d;
+    color: white;
+}
+.basket .dropdown-menu {
+    background-color: #084d63!important;
+    padding: 20px!important;
+}
+.basket .dropdown-menu a {
+    border: none!important;
+    
+}
+.logout {
+    float:left!important;
+}
+thead tr {
+    border-bottom: 2px solid white!important;
+}
+.ign-in {
+    background-color: #025873!important;
+}

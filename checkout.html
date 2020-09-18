@@ -1,0 +1,378 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class="body"><div class="sidebar">
+		    <nav class="navbar navbar-default" role="navigation">
+        <div class="fluid-container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">{{ store.name }}</a>
+          </div>
+
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="{% if page.category == "index" %}active{% endif %}"><a href="/">{{ lang("category.home") }}</a></li>
+                {% for category in store.categories %}
+                  {% if category.subcategories|length > 0 %}
+                    <li class="dropdown {% if category.active %}active{% endif %}">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ category.name }} <i class="fa fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                          {% for subcategory in category.subcategories %}
+                            <li><a href="/category/{{ subcategory.id }}">{{ subcategory.name }}</a></li>
+                          {% endfor %}
+                        </ul>
+                  {% else %}
+                    <li class="{% if category.active %}active{% endif %}"><a href="/category/{{ category.id }}">{{ category.name }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% for page in store.pages %}
+                    <li class="{% if page.active %}active{% endif %}"><a href="/{{ page.slug }}">{{ page.title }}</a></li>
+                {% endfor %}                
+                {% if basket.packages|length > 0 %} 
+                    <li class="visible-xs {% if page.category == "checkout" %}active{% endif %}"><a href="/checkout/basket">Checkout</a></li>
+                {% endif %}
+                {% if basket.username %} 
+                    <li class="visible-xs"><a href="/checkout/logout">Logout</a></li>
+                {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+			{{ modules|raw }}
+		</div>
+		<div class="content">
+		    <div class="top-cont">
+		        <div class="buttons">
+          <div class="toolbar">
+            <div class="logout">
+                {% if basket.username %} 
+                    <a href="/checkout/logout" class="btn">{{ lang("button.logout") }}</a>
+                {% endif %}
+            </div>
+            <div class="currency">
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                {{ basket.currency }} <span class="fa fa-caret-down"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                {% for currency in store.currencies %}
+                    {% if currency.code in [store.currency, "AUD", "BRL", "CAD", "DKK", "EUR", "NOK", "NZD", "GBP", "SEK", "USD", "PLN"] %}
+                        <li {% if basket.currency == currency.code %}class="active"{% endif %}>
+                          <a href="?currency={{ currency.code }}">{{ currency.code }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="basket">
+                {% if basket.packages|length > 0 %}
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    {{ lang("basket.count", basket.packages|length, basket.price|money, basket.currency) }} <span class="fa fa-caret-down"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        {% for package in basket.packages %}
+                            <li class="item">
+                            <div class="name">{{ package.name[:25] }}</div>
+                            <div class="price">{{ package.price|money }} <small>{{ basket.currency }}</small></div>
+                            <div class="remove"><a href="/checkout/packages/remove/{{ package.id }}"><span class="fa fa-times"</span></a></div>
+                            </li>
+                        {% endfor %}
+                        <li class="checkout">
+                          <div class="total"><b>{{ lang("basket.total") }}:</b> {{ basket.price|money }} <small>{{ basket.currency }}</small></div>
+                          <div class="button"><a href="/checkout/basket" class="btn btn-success">Checkout</a></div>
+                        </li>
+                    </ul>
+                {% else %}
+                  <a href="#" class="btn" disabled="disabled"><i class="icon-shopping-cart icon-white"></i> {{ lang("basket.count", 0, 0.00, basket.currency) }}</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+		    </div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="pull-left">
+						{{ lang("title.basket.checkout") }}
+					</div>
+					<div class="text-right">
+						{{ basket.price|money }} <small>{{ basket.currency }}</small>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="checkout">
+
+                        <div class="packages">
+                          <form method="post" action="/checkout/update">
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <th>{{ lang("basket.package.name") }}</th>
+                                <th>{{ lang("basket.package.price") }}</th>
+                                <th class="hidden-xs">{{ lang("basket.package.quantity") }}</th>
+                                <th>&nbsp;</th>
+                              </thead>
+                              <tbody>
+			            		  {% for package in basket.packages %}
+                                      <tr>
+                                        <td class="name">{{ package.name }}</td>
+                                        <td class="price">{{ package.price|money }} <small>{{ basket.currency }}</small></td>
+                                        <td class="quantity"><input type="text" name="quantity[{{ package.id }}]" value="{{ package.quantity }}" {% if package.price == 0.00 or package.disableQuantity %}disabled="disabled"{% endif %}/></td>
+                                        <td class="buttons">
+                                          <button class="btn btn-default btn-sm hidden-xs"><i class="fa fa-refresh"></i></button>
+                                          <a href="javascript::void(0);" data-remote="/package/{{ package.id }}" class="btn btn-info hidden-xs btn-sm toggle-modal"><i class="fa fa-info-circle"></i></a>
+                                          <a href="/checkout/packages/remove/{{ package.id }}" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                                        </td>
+                                      </tr>
+                                      {% if not package.disable_gifting %}
+                                          {% include "gifting.html" %}
+                                      {% endif %}
+                                   {% endfor %}
+                              </tbody>
+                            </table>
+                          </form>
+                        </div>
+    
+                        <div class="page-header">
+                          <h4>{{ lang("basket.coupons.header") }}</h4>
+                        </div>
+    
+                        <div class="coupons">
+    
+                          <div class="redeem" style="width:100%!important">
+    
+                            <form method="post" action="/checkout/coupons/add">
+                              <div class="input-group">
+                                <input type="text" name="coupon" placeholder="{{ lang('basket.coupons.placeholder') }}" class="form-control ign-in" >
+                                <div class="input-group-btn"><button class="btn btn-primary">{{ lang("button.redeem") }} <i class="fa fa-arrow-right"></i></button></div>
+                              </div>
+                            </form>
+    
+                          </div>
+    
+                          <div class="redeemed">
+        
+                            {% if basket.coupons|length > 0 %}
+                                <table class="table table-hover table-striped">
+                                  <tbody>
+                                    {% for coupon in basket.coupons %}
+                                      <tr>
+                                        <td>{{ coupon.code }}</td>
+                                        <td>{{ coupon.description }}</td>
+                                        <td>
+                                          <a href="/checkout/coupons/remove/{{ coupon.code }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                            {% endif %}
+    
+                          </div>
+    
+                        </div>
+                            
+                        <form method="post" action="{% if basket.price > 0 %}/checkout/pay{% else %}/checkout/free{% endif %}" {% if basket.price > 0 %}class="gateway"{% endif %}>
+    						
+    						<input type="hidden" name="type" value="single" />    
+                            
+                            {% if checkout.gateways|length > 0 and basket.price > 0 %}
+                                <div class="page-header">
+                                  <h4>Payment method</h4>
+                                </div>
+                                
+                                <div class="gateways">
+                                    {% for gateway in checkout.gateways %}
+                                        <div class="radio">
+                                            <label>
+                                              <input type="radio" name="gateway" id="gateway" value="{{ gateway.id }}" {% if checkout.gateways|length == 1 %} checked="checked" {% endif %} data-id="{{ gateway.gateway }}">
+                                              <img src="/templates/209/img/gateways/{{ gateway.gateway }}.png"/> 
+                                              {{ gateway.name }} 
+                                              {% if gateway.offset != 0 %}
+												({% if gateway.offset > 0 %}+{% endif %}{{ gateway.offset|money }} <small>{{ basket.currency }}</small>)
+											    {% endif %} 
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                    
+                            {% endif %}
+                            
+                            {% if checkout.requestAddress %}
+                                <div class="page-header">
+                                  <h4>Billing details</h4>
+                                </div>
+            
+                                <div class="details">
+            
+                                  <div class="row">
+                                    <div class="name">
+                                      <div class="form-group">
+                                        <label>Full Name:</label>
+                                        <input type="input" class="form-control" name="address_name" />
+                                      </div>
+                                    </div>
+                                    <div class="email">
+                                      <div class="form-group">
+                                        <label>Email address:</label>
+                                        <input type="input" class="form-control" name="email" />
+                                      </div>
+                                    </div>
+                                  </div>
+            
+                                  <div class="row">
+                                    <div class="address1">
+                                      <div class="form-group">
+                                        <label>Address Line 1:</label>
+                                        <input type="input" class="form-control" name="address_line_1" />
+                                      </div>
+                                    </div>
+                                    <div class="address2">
+                                      <div class="form-group">
+                                        <label>Address Line 2:</label>
+                                        <input type="input" class="form-control" name="address_line_2" />
+                                      </div>
+                                    </div>
+                                    <div class="city">
+                                      <div class="form-group">
+                                        <label>City:</label>
+                                        <input type="input" class="form-control" name="address_city" />
+                                      </div>
+                                    </div>
+                                  </div>
+            
+                                  <div class="row">
+                                    <div class="zip">
+                                      <div class="form-group">
+                                        <label>Zip Code:</label>
+                                        <input type="input" class="form-control" name="address_zip" />
+                                      </div>
+                                    </div>
+				  <div class="country">
+                                      <div class="form-group">
+                                        <label>Country:</label>
+                                        <select class="form-control" name="address_country">
+                                            <option value="">Select a country</option>
+    									    {% for country in checkout.countries %}
+    										    <option value="{{ country.id }}">{{ country.name }}</option>
+    									    {% endfor %}
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <div class="state">
+                                      <div class="form-group">
+                                        <label>State/Region:</label>
+                                        <input type="input" class="form-control" name="address_state" />
+                                      </div>
+                                    </div>
+                                    </div>
+            
+                                </div>
+                            {% endif %}
+                            
+                            <div class="card-container">
+                            
+                                <div class="page-header">
+                                  <h4>Card details</h4>
+                                </div>
+            
+                                <div class="card">
+            
+                                  <div class="row">
+                                    <div class="number">
+                                      <div class="form-group">
+                                          <label>Card number:</label>
+                                          <input type="text" class="form-control" placeholder="4242 4242 4242 4242" />
+                                      </div>
+                                    </div>
+                                  </div>
+            
+                                  <div class="row">
+                                    <div class="cvc">
+                                      <div class="form-group">
+                                        <label>CVC: <a href="http://www.cvvnumber.com/cvv.html" target="_blank" style="font-size:11px">What is this?</a></label>
+                                        <input type="text" class="form-control" placeholder="123" />
+                                      </div>
+                                    </div>
+                                    <div class="expiration">
+                                      <div class="month">
+                                        <div class="form-group">
+                                          <label>Expiry month:</label>
+                                          <select class="form-control">
+                                            <option value='01'>01 - January</option>
+                                            <option value='02'>02 - February</option>
+                                            <option value='03'>03 - March</option>
+                                            <option value='04'>04 - April</option>
+                                            <option value='05'>05 - May</option>
+                                            <option value='06'>06 - June</option>
+                                            <option value='07'>07 - July</option>
+                                            <option value='08'>08 - August</option>
+                                            <option value='09'>09 - September</option>
+                                            <option value='10'>10 - October</option>
+                                            <option value='11'>11 - November</option>
+                                            <option value='12'>12 - December</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="year">
+                                          <label>Expiry year:</label>
+                                          <select class="form-control">
+                                            {% for year in checkout.expiryYears %}
+                                                <option value="{{ year }}">{{ year }}</option>
+                                            {% endfor %}
+                                          </select>
+                                      </div>
+                                    </div>
+                                  </div>
+            
+                                </div>
+                                
+                            </div>
+        
+                            <div class="tax"></div>
+        
+                            <div class="page-header">
+                              <h4>{{ lang("basket.purchase.header") }}</h4>
+                            </div>
+            
+                            {% if checkout.gateways|length > 0 %}
+                                <div class="row">
+                                  <div class="col-sm-8">
+                                    <div class="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="true" name="agreement">
+                                        {{ lang("basket.purchase.terms", '<a href="javascript::void(0);" data-remote="/terms" class="toggle-modal">', '</a>')|raw }}
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {% if basket.price > 0 %}
+                                            <button type="submit" class="btn btn-success btn-block" data-loading-text="Loading, please wait...">Purchase &raquo;</button>
+                                        {% else %}
+                                            <button type="submit" class="btn btn-success btn-block" data-loading-text="Loading, please wait...">Claim for free &raquo;</button>
+                                        {% endif %}
+                                    </div>
+                                  </div>
+                                </div>  
+                            {% else %}
+							    <h5>You need to setup a <a href="http://server.buycraft.net/gateways" target="_blank">payment gateway</a> in your control panel before players can donate.</h5>
+						    {% endif %}
+                            
+                        </form>
+                    </div>
+				</div>
+			</div>	
+		</div>
+	</div>
+	
+	{% if checkout.kount %}
+        <iframe width="1" height="1" frameborder="0" scrolling="no" src="{{ checkout.kount.url|raw }}">
+            <img width="1" height="1" src="{{ checkout.kount.gif|raw }}">    
+        </iframe>
+    {% endif %}
+	
+{% endblock %}

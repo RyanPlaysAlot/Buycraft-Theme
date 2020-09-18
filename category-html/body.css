@@ -1,0 +1,37 @@
+.tab-container {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+.tab-container > li {
+	display: inline-block;
+}
+
+.tab-container > li > button {
+	background: #bdbdbd;
+  border: 0;
+  margin: 0 20px;
+  padding: 10px 30px;
+	cursor: pointer;
+}
+
+.tab-container > li:first-child > button {
+	margin-left: 0;
+}
+
+.tab-container > li:last-child > button {
+	margin-right: 0;
+}
+
+.tab-parent .content {
+	padding-top: 14px;
+}
+
+.tab-parent .content > div {
+	display: none;
+}
+
+.tab-parent .content div.active {
+	display: block;
+}

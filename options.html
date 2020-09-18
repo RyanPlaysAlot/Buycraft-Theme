@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class="body">
+		<div class="content">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{ options.package.name }}</div>
+				<div class="panel-body">
+				    <div class="variables">
+    					<form method="post">
+    
+    						{% if options.package.chooseServer %}
+    						    <div class="form-group">
+                                    <select class="form-control input-lg" name="server">
+                                        <option value="">Please choose which server to receive this package upon</option>
+                                        {% for server in options.servers %}
+    										<option value="{{ server.id }}">{{ server.name }}</option>
+    									{% endfor %}
+                                    </select>   
+                                </div>
+    						{% endif %}
+    
+    						{% if options.package.customPrice %}
+    							<div class="form-group">
+                                    <div class="input-group">
+                                      <input type="text" name="price" class="form-control input-lg" placeholder="{{ lang("package.options.price.placeholder") }}">
+                                      <span class="input-group-addon"><small>{{ store.currency }}</small></span>
+                                    </div>
+                                </div>
+    						{% endif %}
+    
+    						{% for variable in options.variables %}
+								{% if variable.type == "dropdown" %}
+								     <div class="form-group">
+                                        <select name="variables[{{ variable.id }}]" class="form-control input-lg">
+                                            <option value="">{{ variable.description }}</option>
+    										{% for option in variable.options %}
+    											<option value="{{ option.id }}">
+    												{{ option.name }}
+    												{% if option.price > 0 %}
+    													(+{{ option.price|money }} {{ basket.currency }})
+    												{% endif %}
+    											</option>
+    										{% endfor %}
+                                        </select>   
+                                     </div> 
+								{% else %}
+								    <div class="form-group">
+                                          <input type="text" name="variables[{{ variable.id }}]" class="form-control input-lg" placeholder="{{ variable.description }}" />
+                                    </div>
+								{% endif %}
+    						{% endfor %}
+        
+                            <div class="buttons">
+                                <div class="back">
+                                  <a href="/category/{{ options.package.category }}" class="btn btn-block btn-danger">{{ lang("button.back") }}</a>
+                                </div>
+                                <div class="continue">
+                                  <input type="submit" value="{{ lang("button.continue") }}" name="submit" class="btn btn-block btn-success" />
+                                </div>
+                            </div>
+
+    					</form>
+    				</div>
+				</div>
+			</div>
+		</div>
+		<div class="sidebar">
+			{{ modules|raw }}
+		</div>
+	</div>
+{% endblock %}

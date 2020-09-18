@@ -1,0 +1,29 @@
+{% extends "email/layout.html" %}
+
+{% block content %}
+	<p>
+	    Thank you for purchasing a {{ accountData.name }} gift card! Your gift card is below. If you have any problems redeeming your card, please let us know.
+	</p>
+
+	<p>&nbsp;</p>
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" >
+	    <tr>
+		<td width="10%"></td>
+		<td width="80%" style="border: 1px dashed #333;">
+		    <center>
+		        <h2>Gift Card</h2>
+		        <h1>{{ card.card_number }}</h1>
+		        <p>&nbsp;</p>
+		        <p><b>Value:</b> {{ card.currency }} {{ card.starting_balance|number_format(2, ".", ",") }}</p>
+		    </center>
+
+		</td>
+		<td width="10%"></td>
+	    </tr>
+	</table>
+
+	<p>&nbsp;</p>
+	{% if accountData.email_note %}
+		<p>{{ accountData.email_note|raw }}</p>
+	{% endif %}
+{% endblock %}
